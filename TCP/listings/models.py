@@ -41,10 +41,10 @@ class Colis(models.Model):
     typeDeConfirmation = models.CharField(max_length=10,choices=CONFIRMATION_CHOICES)
     numeroConfirmation = models.CharField(max_length=6)
 
-    def save(self, *args, **kwargs):
-        if not self.numeroConfirmation:  # Générer un code de confirmation uniquement s'il n'est pas déjà défini
-            self.numeroConfirmation = ''.join(random.choices('0123456789', k=6))  # Générer un code à 6 chiffres
-        super(Colis, self).save(*args, **kwargs)  # Appeler la méthode save() du modèle parent
+    #def save(self, *args, **kwargs):
+    #    if not self.numeroConfirmation:  # Générer un code de confirmation uniquement s'il n'est pas déjà défini
+    #        self.numeroConfirmation = ''.join(random.choices('0123456789', k=6))  # Générer un code à 6 chiffres
+    #    super(Colis, self).save(*args, **kwargs)  # Appeler la méthode save() du modèle parent
 
 class Vehicle(models.Model):
     id = models.AutoField(primary_key=True)
