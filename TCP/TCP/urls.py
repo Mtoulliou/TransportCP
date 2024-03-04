@@ -21,4 +21,7 @@ from listings import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.accueil),
+    path('expediteur/', views.expediteur),
+    path('destinataire/', views.destinataire),
+    path('transporteur/', views.transporteur),
 ]
