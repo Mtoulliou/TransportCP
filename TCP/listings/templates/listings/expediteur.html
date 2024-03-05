@@ -1,0 +1,79 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transport Colis Passion</title>
+    <link rel="stylesheet" href="{% static 'listings/styles.css' %}" />
+    <link rel="icon" href="{% static 'listings/img/logo.png' %}" type="image/icon type">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <img src="{% static 'listings/img/logo.png' %}" height="100px"/>
+            <h2 class="hero-text">Transport Colis Passion</h2>
+        </div>
+        <div class="form">
+            <a href="/accueil/" style="text-decoration: none;">
+                <button class="btn">Déconnexion</button>
+            </a>
+        </div>
+    </header>
+    <div class='creer'>
+        <button id="programmerEnvoiBtn" class="btn" style="width: 500px;margin: 50px;">Programmer un envoi</button>
+        <form class="form" id="programmerEnvoiForm" style="display: none;margin: 50px;">
+            <input type="text" placeholder="longueur">
+            <input type="text" placeholder="largeur">
+            <input type="text" placeholder="hauteur">
+            <input type="text" placeholder="poids">
+            <input type="text" placeholder="adresse de livraison">
+            <input type="text" placeholder="Mail client">
+            Confirmation de Livraison <input type="checkbox">
+            <button class='btn' style="width: 500px;">Programmer un envoi</button>
+        </form>
+    </div>
+    <div class="encours">
+        <table>
+            <thead>
+                <tr>
+                    <th  scope="col">N° Suivi</th>
+                    <th scope="col">Longueur</th>
+                    <th scope="col">Largeur</th>
+                    <th scope="col">Hauteur</th>
+                    <th scope="col">Poids</th>
+                    <th scope="col">Adresse de livraison</th>
+                    <th scope="col">Etat</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for colis in colis %}
+                <tr>
+                    <th scope="row">{{colis.numeroSuivi}}</th>
+                    <td>{{colis.longueur}}</td>
+                    <td>{{colis.largeur}}</td>
+                    <td>{{colis.hauteur}}</td>
+                    <td>{{colis.poids}}</td>
+                    <td>{{colis.adresseLivraison}}</td>
+                    <td>{{colis.etat}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+
+    </div>
+</body>
+</html>
+
+<script>    
+    document.getElementById('programmerEnvoiBtn').addEventListener('click', function() {
+        var form = document.getElementById('programmerEnvoiForm');
+        if (form.style.display === 'none') {
+            form.style.display = 'block';
+            programmerEnvoiBtn.style.display = 'none';
+        } else {
+            form.style.display = 'none';
+        }
+    });
+</script>
