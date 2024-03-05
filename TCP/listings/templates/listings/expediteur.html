@@ -88,27 +88,26 @@
 </script>
 <script>
     function supprimerColis(colisId) {
-        if (confirm("Êtes-vous sûr de vouloir supprimer cet élément ?")) {
-            var form = document.getElementById("supprimerForm" + colisId);
-            fetch(form.action, {
-                method: 'POST',
-                headers: {
-                    'X-CSRFToken': '{{ csrf_token }}',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ 'colis_id': colisId })
-            })
-            .then(response => {
-                if (response.ok) {
-                    // Mettre à jour le tableau après la suppression réussie
-                    window.location.reload();
-                } else {
-                    console.error('La requête de suppression a échoué.');
-                }
-            })
-            .catch(error => {
-                console.error('Erreur lors de la suppression:', error);
-            });
-        }
+        var form = document.getElementById("supprimerForm" + colisId);
+        fetch(form.action, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ 'colis_id': colisId })
+        })
+        .then(response => {
+            if (response.ok) {
+                // Recharger la page après la suppression réussie
+                wait(10)
+                window.location.reload();
+            } else {
+                console.error('La requête de suppression a échoué.');
+            }
+        })
+        .catch(error => {
+            console.error('Erreur lors de la suppression:', error);
+        });
     }
 </script>

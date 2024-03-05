@@ -20,7 +20,7 @@ def expediteur(request):
 def supprimer_colis(request, colis_id):
     colis = get_object_or_404(Colis, pk=colis_id)
     colis.delete()
-    return redirect('expediteur')      
+    return (request, 'listings/expediteur.html')     
 
 def transporteur(request): 
     return render(request, 'listings/transporteur.html')    

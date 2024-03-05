@@ -143,5 +143,44 @@ footer p {
     margin: 0;
 }
 
+/* Style pour le tableau */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 10px;
+  overflow: hidden;
+}
 
+/* Style pour l'en-tête de colonne */
+th {
+  background-color: #333;
+  color: #fff;
+  font-weight: bold;
+  padding: 10px;
+  text-align: left;
+}
 
+/* Style pour les lignes impaires */
+tr:nth-child(odd) {
+  background-color: #f2f2f2;
+}
+
+/* Style pour les cellules */
+td {
+  padding: 10px;
+}
+
+/* Style pour les boutons de suppression */
+.btn-danger {
+  background-color: #dc3545;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn-danger:hover {
+  background-color: #c82333;
+}
