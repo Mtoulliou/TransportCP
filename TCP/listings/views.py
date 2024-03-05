@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from listings.models import AdminTCP,Colis
-from .form import ColisForm
+from listings.form import ColisForm
 
 def accueil(request):
     admintcp=AdminTCP.objects.all()
@@ -15,7 +15,7 @@ def expediteur(request):
     form = ColisForm(request.POST or None)
     if form.is_valid() : 
         form.save()
-    return render(request, 'listings/expediteur.html',{'colis':colis},{'form':form})      
+    return render(request, 'listings/expediteur.html',{'colis':colis, 'form':form})      
 
 def transporteur(request): 
     return render(request, 'listings/transporteur.html')    

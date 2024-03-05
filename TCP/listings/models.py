@@ -34,18 +34,18 @@ class Colis(models.Model):
     largeur = models.FloatField(validators=[MinValueValidator(0.01), MaxValueValidator(999999999.99)])
     hauteur = models.FloatField(validators=[MinValueValidator(0.01), MaxValueValidator(999999999.99)])
     etat = models.CharField(max_length=10,choices=ETAT_CHOICES,default=EMBALLE)
-    expediteur = models.ForeignKey('Expediteur', on_delete=models.CASCADE)
-    destinataire = models.ForeignKey('Destinataire', on_delete=models.CASCADE)
-    vehicule = models.ForeignKey('Vehicle', on_delete=models.CASCADE)
+    expediteur = models.ForeignKey('Expediteur', on_delete=models.CASCADE,default=None,null=True)
+    destinataire = models.ForeignKey('Destinataire', on_delete=models.CASCADE,default=None,null=True)
+    vehicule = models.ForeignKey('Vehicle', on_delete=models.CASCADE,default=None,null=True)
     adresseLivraison = models.CharField(max_length=255)
     typeDeConfirmation = models.CharField(max_length=10,choices=CONFIRMATION_CHOICES)
-    numeroConfirmation = models.CharField(max_length=6)
+    numeroConfirmation = models.CharField(max_length=6,blank=True)
 
-    #def save(self, *args, **kwargs):
-    #    if not self.numeroConfirmation:  # Générer un code de confirmation uniquement s'il n'est pas déjà défini
-    #        self.numeroConfirmation = ''.join(random.choices('0123456789', k=6))  # Générer un code à 6 chiffres
-    #    super(Colis, self).save(*args, **kwargs)  # Appeler la méthode save() du modèle parent
-
+    def save(self, *args, **kwargs):
+        if not self.numeroConfirmation:  # Vérifier si le numéro de confirmation n'est pas déjà défini
+            self.numeroConfirmation = str(random.randint(100000, 999999))  # Générer un nouveau numéro de confirmation
+        super().save(*args, **kwargs) 
+    
 class Vehicle(models.Model):
     id = models.AutoField(primary_key=True)
     transporteur = models.ForeignKey('Transporteur', on_delete=models.CASCADE)

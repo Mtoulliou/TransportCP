@@ -4,8 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'listings/styles_expediteur.css' %}" />
     <title>Transport Colis Passion</title>
-    <link rel="stylesheet" href="{% static 'listings/styles.css' %}" />
+
     <link rel="icon" href="{% static 'listings/img/logo.png' %}" type="image/icon type">
 </head>
 <body>
@@ -22,16 +23,13 @@
     </header>
     <div class='creer'>
         <button id="programmerEnvoiBtn" class="btn" style="width: 500px;margin: 50px;">Programmer un envoi</button>
-        <form class="form" id="programmerEnvoiForm" style="display: none;margin: 50px;">
-            <input type="text" placeholder="longueur">
-            <input type="text" placeholder="largeur">
-            <input type="text" placeholder="hauteur">
-            <input type="text" placeholder="poids">
-            <input type="text" placeholder="adresse de livraison">
-            <input type="text" placeholder="Mail client">
-            Confirmation de Livraison <input type="checkbox">
-            <button class='btn' style="width: 500px;">Programmer un envoi</button>
+        {% block content %}
+        <form method="post" class="form" id="programmerEnvoiForm" style="display: none;margin: 50px;">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type='submit' class='btn' style="width: 500px;">Programmer un envoi</button>
         </form>
+        {% endblock %}
     </div>
     <div class="encours">
         <table>
@@ -43,6 +41,8 @@
                     <th scope="col">Hauteur</th>
                     <th scope="col">Poids</th>
                     <th scope="col">Adresse de livraison</th>
+                    <th scope="col">Type de confirmation</th>
+                    <th scope="col">N° de confirmation</th>
                     <th scope="col">Etat</th>
                 </tr>
             </thead>
@@ -55,6 +55,8 @@
                     <td>{{colis.hauteur}}</td>
                     <td>{{colis.poids}}</td>
                     <td>{{colis.adresseLivraison}}</td>
+                    <td>{{colis.typeDeConfirmation}}</td>
+                    <td>{{colis.numeroConfirmation}}</td>
                     <td>{{colis.etat}}</td>
                 </tr>
                 {% endfor %}
