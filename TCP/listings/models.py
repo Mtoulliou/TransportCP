@@ -73,6 +73,7 @@ class Transporteur(models.Model):
 
 class Destinataire(models.Model):
     id = models.AutoField(primary_key=True)
+    
     nom = models.CharField(max_length=100)
     mdp = models.CharField(max_length=100)
     adresse = models.CharField(max_length=255)
