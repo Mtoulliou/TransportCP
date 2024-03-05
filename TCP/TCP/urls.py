@@ -23,6 +23,7 @@ urlpatterns = [
     path('', views.accueil),
     path('accueil/', views.accueil),
     path('expediteur/', views.expediteur),
+    path('expediteur/supprimer/<int:colis_id>/', views.supprimer_colis, name='supprimer_colis'),
     path('destinataire/', views.destinataire),
     path('transporteur/', views.transporteur),
 ]

@@ -44,6 +44,7 @@
                     <th scope="col">Type de confirmation</th>
                     <th scope="col">N° de confirmation</th>
                     <th scope="col">Etat</th>
+                    <th scope="col">Supprimer</th>
                 </tr>
             </thead>
             <tbody>
@@ -58,6 +59,12 @@
                     <td>{{colis.typeDeConfirmation}}</td>
                     <td>{{colis.numeroConfirmation}}</td>
                     <td>{{colis.etat}}</td>
+                    <td>
+                        <form action="{% url 'supprimer_colis' colis.numeroSuivi %}" method="post" id="supprimerForm{{ colis.numeroSuivi }}">
+                            {% csrf_token %}
+                            <button type="button" onclick="supprimerColis({{ colis.numeroSuivi }})" class="btn btn-danger">Supprimer</button>
+                        </form>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -78,4 +85,30 @@
             form.style.display = 'none';
         }
     });
+</script>
+<script>
+    function supprimerColis(colisId) {
+        if (confirm("Êtes-vous sûr de vouloir supprimer cet élément ?")) {
+            var form = document.getElementById("supprimerForm" + colisId);
+            fetch(form.action, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ 'colis_id': colisId })
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Mettre à jour le tableau après la suppression réussie
+                    window.location.reload();
+                } else {
+                    console.error('La requête de suppression a échoué.');
+                }
+            })
+            .catch(error => {
+                console.error('Erreur lors de la suppression:', error);
+            });
+        }
+    }
 </script>

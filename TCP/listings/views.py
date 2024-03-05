@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render,redirect, get_object_or_404
 from listings.models import AdminTCP,Colis
 from listings.form import ColisForm
 
@@ -15,7 +15,12 @@ def expediteur(request):
     form = ColisForm(request.POST or None)
     if form.is_valid() : 
         form.save()
-    return render(request, 'listings/expediteur.html',{'colis':colis, 'form':form})      
+    return render(request, 'listings/expediteur.html',{'colis':colis, 'form':form})
+
+def supprimer_colis(request, colis_id):
+    colis = get_object_or_404(Colis, pk=colis_id)
+    colis.delete()
+    return redirect('expediteur')      
 
 def transporteur(request): 
     return render(request, 'listings/transporteur.html')    
