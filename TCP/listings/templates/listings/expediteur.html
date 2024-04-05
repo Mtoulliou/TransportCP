@@ -100,7 +100,6 @@
         .then(response => {
             if (response.ok) {
                 // Recharger la page après la suppression réussie
-                wait(10)
                 window.location.reload();
             } else {
                 console.error('La requête de suppression a échoué.');

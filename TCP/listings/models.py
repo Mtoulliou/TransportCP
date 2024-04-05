@@ -41,6 +41,12 @@ class Colis(models.Model):
     typeDeConfirmation = models.CharField(max_length=10,choices=CONFIRMATION_CHOICES)
     numeroConfirmation = models.CharField(max_length=6,blank=True)
 
+    def __str__(self):
+        return f"Colis {self.numeroSuivi} - Poids: {self.poids} kg - État: {self.etat}"
+    
+    def recherche_par_numero(cls, numero):
+        return cls.objects.filter(numeroSuivi=numero)
+    
     def save(self, *args, **kwargs):
         if not self.numeroConfirmation:  # Vérifier si le numéro de confirmation n'est pas déjà défini
             self.numeroConfirmation = str(random.randint(100000, 999999))  # Générer un nouveau numéro de confirmation
@@ -86,4 +92,3 @@ class AdminTCP(models.Model):
     id = models.AutoField(primary_key=True)
     nom = models.CharField(max_length=100)
     mdp = models.CharField(max_length=100)
-

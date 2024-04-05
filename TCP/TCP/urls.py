@@ -26,4 +26,5 @@ urlpatterns = [
     path('expediteur/supprimer/<int:colis_id>/', views.supprimer_colis, name='supprimer_colis'),
     path('destinataire/', views.destinataire),
     path('transporteur/', views.transporteur),
+    path('recherche/', views.recherche_colis, name='recherche_colis'),
 ]
