@@ -1,0 +1,153 @@
+/* Reset CSS */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}
+
+.container {
+    max-width: 10px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+header {
+    display: flex;
+    background-color: #333;
+    color: #fff;
+    padding: 20px 0;
+}
+
+header .logo {
+    font-size: 56px;
+    text-align: center;
+}
+
+header .form {
+    flex-direction: column;
+   margin: 25px;
+
+}
+
+.form input,
+.form button {
+    display: block;
+    margin-bottom: 10px;
+    width: 100%;
+    width: 150px;
+    height: 30px;
+    border-radius: 50px;
+} 
+
+.form input {
+    padding: 10px;
+}
+
+.btn {
+    transition: all 0.3s ease-in-out;
+    font-family: "Dosis", sans-serif;
+  }
+  
+    .btn {
+    width: 150px;
+    height: 60px;
+    border-radius: 50px;
+    background-image: linear-gradient(135deg, #feb692 0%, #ea5455 100%);
+    box-shadow: 0 20px 30px -6px rgba(238, 103, 97, 0.5);
+    outline: none;
+    cursor: pointer;
+    border: none;
+    font-size: 24px;
+    color: white;
+  }
+  
+  .btn:hover {
+    transform: translateY(3px);
+    box-shadow: none;
+  }
+  
+  .btn:active {
+    opacity: 0.5;
+  }
+
+
+.searchBox {
+    display: flex;
+    max-width: 1000px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    background: #333;
+    border-radius: 50px;
+    position: relative;
+  }
+
+  .searchButton {
+    color: white;
+    position: absolute;
+    right: 8px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-image: linear-gradient(135deg, #feb692 0%, #ea5455 100%);
+    border: 0;
+    display: inline-block;
+    transition: all 300ms cubic-bezier(.23, 1, 0.32, 1);
+  }
+  /*hover effect*/
+  button:hover {
+    color: #fff;
+    background-color: #1A1A1A;
+    box-shadow: rgba(0, 0, 0, 0.5) 0 10px 20px;
+    transform: translateY(-3px);
+  }
+  /*button pressing effect*/
+  button:active {
+    box-shadow: none;
+    transform: translateY(0);
+  }
+  
+  .searchInput {
+    border: none;
+    background: none;
+    outline: none;
+    color: white;
+    font-size: 20px;
+    padding: 24px 46px 24px 26px;
+  }
+  
+  
+  
+.hero-text {
+    font-size: 32px;
+    text-align: center;
+}
+
+section {
+    margin: 30px 0px;
+}
+
+#apropos {
+    background-color: #333;
+    color: #fff;
+    padding: 20px 0;
+}
+
+footer {
+    background-color: #333;
+    color: #442121;
+    text-align: center;
+    padding: 200px 0;
+}
+
+footer p {
+    margin: 0;
+}
+
+
+
