@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TCP - Transport Colis Passion</title>
+    <link rel="stylesheet" href="{% static 'listings/styles_expediteur.css' %}" />
+</head>
+<body>
+    <header>
+        <div class="container">
+            <a href="{% url 'accueil' %}"><img src="{% static 'listings/img/logo.png' %}" height="100px"/></a>
+            <h2 class="hero-text">Transport Colis Passion</h2>
+        </div>
+      
+        <div class="menu_acces">
+            <a href="{% url 'log_out' %}" class="btn" style="text-decoration: none;">Se déconnecter</a></li>
+        </div>
+    </header>
+    <div class="encours">
+        {% if colis %}
+        <table>
+            <thead>
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Dimensions</th>
+                <th scope="col">Poid</th>
+                <th scope="col">Destination</th>
+                <th scope="col">Etat</th>
+                <th scope="col">Expediteur</th>
+                <th scope="col">Livraison</th>
+              </tr>
+            </thead>
+            <tbody>
+                {% for coli in colis %}
+              <tr>
+                <th>{{coli.id}}</th>
+                <td>{{coli.longueur}}x{{coli.largeur}}x{{coli.hauteur}} cm</td>
+                <td>{{coli.poids}}Kg</td>
+                <td>{{coli.destination}}</td>
+                <td>{{coli.etat}}</td>
+                <td>{{coli.expediteur}}</td> 
+                <td>
+                    <form action="{% url 'colis_recu' %}" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="colis_id" value="{{ coli.id }}">
+                        <input type="submit" class="btn" value="Reçu">
+                    </form>
+                </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+          </table>
+        {% else %}
+        <h4> Pas d'enregistrements</h4>
+        {% endif %}
+        </div>
+
+
+
+
+
+
+</body>
+</html>
+          
+    

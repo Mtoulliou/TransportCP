@@ -1,0 +1,71 @@
+
+<!DOCTYPE html>
+{% load static %}
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TCP - Transport Colis Passion</title>
+    <link rel="stylesheet" href="{% static 'listings/styles_expediteur.css' %}" />
+</head>
+<body>
+    <header>
+        <div class="container">
+            <a href="{% url 'accueil' %}"><img src="{% static 'listings/img/logo.png' %}" height="100px"/></a>
+            <h2 class="hero-text">Transport Colis Passion</h2>
+        </div>
+      
+        <div class="menu_acces">
+            <a href="{% url 'log_out' %}" class="btn" style="text-decoration: none;">Se déconnecter</a></li>
+        </div>
+
+        </header>
+        <div class="creer">
+            <h4 class="">Ajouter un colis</h4>
+            <form action="{% url 'expediteur' %}" method="POST"> 
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input type="submit" class="btn" style="width: 500px;" value="Ajouter">
+            </form>
+        </div>
+        <div class="encours">
+            {% if colis %}
+            <table>
+                <thead>
+                  <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Dimensions</th>
+                    <th scope="col">Poid</th>
+                    <th scope="col">Destination</th>
+                    <th scope="col">Etat</th>
+                    <th scope="col">Transporteur</th>
+                    <th scope="col">Destinataire</th>
+                    <th scope="col">Supprimer</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {% for coli in colis %}
+                  <tr>
+                    <th>{{coli.id}}</th>
+                    <td>{{coli.longueur}}x{{coli.largeur}}x{{coli.hauteur}} cm</td>
+                    <td>{{coli.poids}}Kg</td>
+                    <td>{{coli.destination}}</td>
+                    <td>{{coli.etat}}</td>
+                    <td>{{coli.transporteur}}</td>
+                    <td>{{coli.destinataire}}</td> 
+                    <td>
+                        <form action="{% url 'delete_colis' coli.id %}" method="POST">
+                            {% csrf_token %}
+                            <input type="submit" class="btn" value="Supprimer">
+                        </form>
+                    </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+              </table>
+            {% else %}
+            <h4 class="text-center alert alert alert-warning"> Pas d'enregistrements</h4>
+            {% endif %}
+            </div>
+    </body>
+</html>

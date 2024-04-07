@@ -1,0 +1,121 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription - Transport Colis Passion</title>
+    <link rel="stylesheet" href="{% static 'listings/register.css' %}">
+</head>
+<body>
+  {% if error %}  
+  <div class="message">{{ message }}</div>
+
+
+  {% endif %}
+<div class="register wrap">
+    <form class="aller" action='' method="POST">
+        {% csrf_token %}
+
+        <div class="column-container">
+            <div class="column1">
+                <div class="h1">Informations personnelles</div>
+                <input placeholder="Nom" id="nom" name="nom" type="text" required>
+                <input placeholder="Prénom" id="prenom" name="prenom" type="text" required>
+                <input placeholder="Adresse postale" id="adresse" name="adresse" type="text" required>
+                <input placeholder="Code postal" id="code_postal" name="code_postal" type="text" required>
+                <input placeholder="Ville" id="ville" name="ville" type="text" required>
+            </div>
+            <div class="column2">
+                <div class="h1">Coordonnées de contact</div>
+                <input placeholder="Téléphone" id="telephone" name="telephone" type="tel" required>
+                <input placeholder="Email" id="email" name="email" type="email" required>
+                <input placeholder="Mot de passe" id="password" name="password" type="password" required>
+                <input placeholder="Confirmez le mot de passe" id="password_confirm" name="password_confirm" type="password" required>
+            </div>
+        </div>
+        <input value="S'inscrire" class="btn" type="submit">
+    </form>
+</div>
+
+</body>
+</html>
+
+
+
+
+<!--
+<head>  
+    <title>Transport Colis Passion</title>
+
+
+    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+
+</head>
+
+
+<body>
+
+
+
+
+    
+
+<form class="form-horizontal" action=""  method="POST" >
+    {% csrf_token %}
+  <fieldset>
+    <div id="legend">
+      <legend class="">Inscription</legend>
+    </div>
+    <div class="control-group">
+      
+      <label class="control-label"  for="username">Nom d'utilisateur</label>
+      <div class="controls">
+        <input type="text" id="username" name="username" placeholder="" class="input-xlarge" required>
+        <p class="help-block">Veuillez inscrire votre nom d'utilisateur.</p>
+      </div>
+    </div>
+ 
+    <div class="control-group">
+      
+      <label class="control-label" for="email">E-mail</label>
+      <div class="controls">
+        <input type="text" id="email" name="email" placeholder="" class="input-xlarge" required>
+        <p class="help-block">Rentrez votre adresse e-mail.</p>
+      </div>
+    </div>
+
+
+    <div class="control-group">
+
+      <label class="control-label" for="password">Mot de passe</label>
+      <div class="controls">
+        <input type="password" id="password" name="password" placeholder="" class="input-xlarge" required>
+        <p class="help-block">Le mot de passe doit être plus long que 8 caractères, avec une lettre majuscule, une lettre minuscule, un chiffre et un symbole</p>
+      </div>
+    </div>
+ 
+    <div class="control-group">
+   
+      <label class="control-label"  for="password_confirm">Confirmez le mot de passe</label>
+      <div class="controls">
+        <input type="password" id="password_confirm" name="password_confirm" placeholder="" class="input-xlarge" required>
+        <p class="help-block">Merci de réécrire votre mot de passe</p>
+      </div>
+    </div>
+ 
+    <div class="control-group">
+     
+      <div class="controls">
+        <button type="submit" class="btn btn-success">S'inscrire</button>
+      </div>
+    </div>
+  </fieldset>
+</form>
+
+
+</body>
+-->
