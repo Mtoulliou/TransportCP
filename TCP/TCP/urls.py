@@ -42,4 +42,8 @@ urlpatterns = [
     path('recherche/', views.recherche_colis, name='recherche_colis'),
     path('register/', views.register),
     path('log_in/', views.log_in, name='log_in_page'),
+    path('log_out/', views.log_out, name='log_out'),
+    path('forgot_password/', views.forgot_password, name='forgot_password'),
+
+    
 ]
