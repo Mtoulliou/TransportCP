@@ -11,23 +11,15 @@
 <body>
     <header>
         <div class="container">
-            <a href="{% url 'accueil' %}"><img src="{% static 'listings/img/logo.png' %}" height="100px"/></a>
+          <a href="{% url 'accueil' %}"><img src="{% static 'listings/img/logo.png' %}" height="100px"/></a>
             <h2 class="hero-text">Transport Colis Passion</h2>
         </div>
       
         <div class="menu_acces">
-            <a href="{% url 'log_out' %}" class="btn" style="text-decoration: none;">Se déconnecter</a></li>
-        </div>
+          <a href="{% url 'log_out' %}" class="btn" style="text-decoration: none;">Se déconnecter</a></li>
+      </div>
 
         </header>
-        <div class="creer">
-            <h4 class="">Ajouter un colis</h4>
-            <form action="{% url 'expediteur' %}" method="POST"> 
-                {% csrf_token %}
-                {{ form.as_p }}
-                <input type="submit" class="btn" style="width: 500px;" value="Ajouter">
-            </form>
-        </div>
         <div class="encours">
             {% if colis %}
             <table>
@@ -40,6 +32,7 @@
                     <th scope="col">Etat</th>
                     <th scope="col">Transporteur</th>
                     <th scope="col">Destinataire</th>
+                    <th scope="col">Actions</th>
                     <th scope="col">Supprimer</th>
                   </tr>
                 </thead>
@@ -54,10 +47,36 @@
                     <td>{{coli.transporteur}}</td>
                     <td>{{coli.destinataire}}</td> 
                     <td>
-                        <form action="{% url 'delete_colis' coli.id %}" method="POST">
+                      <ul style='list-style-type: none;''>
+                        <li>
+                          <form action="{% url 'colis_arrive' %}" method="POST">
                             {% csrf_token %}
-                            <input type="submit" class="btn" value="Supprimer">
+                            <input type="hidden" name="colis_id" value="{{ coli.id }}">
+                            <input type="submit" class="" value="Arrivé">
                         </form>
+                        </li>
+                        <li>
+                          <form action="{% url 'colis_depart' %}" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="colis_id" value="{{ coli.id }}">
+                            <input type="submit" class="" value="Départ">
+                        </form>
+                        </li>
+                        <li>
+                          <form action="{% url 'colis_livre' %}" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="colis_id" value="{{ coli.id }}">
+                            <input type="submit" class="" value="Livré">
+                        </form>
+                        </li>
+                    </td>
+                    
+                    <td>
+                      <form action="{% url 'attribuer_colis' %}" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="colis_id" value="{{ coli.id }}">
+                        <input type="submit" class="btn" value="Choisir">
+                    </form>
                     </td>
                     </tr>
                     {% endfor %}

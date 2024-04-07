@@ -10,33 +10,26 @@
 <body>
     <header>
         <div class="container">
-            <img src="{% static 'listings/img/logo.png' %}" height="100px"/>
+            <a href="{% url 'accueil' %}"><img src="{% static 'listings/img/logo.png' %}" height="100px"/></a>
             <h2 class="hero-text">Transport Colis Passion</h2>
         </div>
       
         <div class="menu_acces">
-            <ul>
-              <li id="plus_options">Plus d'options
-                <ul id="sous_menu" class="sous_menu">
-                  <li><a href="#">Vous êtes professionnel?</a></li>
-                  <li><a href="{% url 'log_out' %}">Se déconnecter</a></li>
-                </ul>
-              </li>
+            <ul style="list-style-type: none;">
+                <li><a href="/log_in" class="btn" style="text-decoration: none;">  Login  </a></li>
+                <li><a href="{% url 'expediteur' %}" class="btn" style="text-decoration: none;">  expéditeur  </a></li>
             </ul>
-          </div>
-          <script>
-
-document.getElementById("plus_options").addEventListener("click", function() {
-  var sousMenu = document.getElementById("sous_menu");
-  if (sousMenu.style.display === "none") {
-    sousMenu.style.display = "block";
-  } else {
-    sousMenu.style.display = "none";
-  }
-});
-
-          </script>
-          
+        </div>
+        <div class="menu_acces">
+            <ul style="list-style-type: none;">
+                <li>
+                    <a href="/register" class="btn" style="text-decoration: none;">  Register  </a>
+                </li>
+                <li>
+                    <a href="{% url 'transporteur' %}" class="btn" style="text-decoration: none;">  transporteur  </a>
+                </li>
+            </ul>
+        </div>     
     </header>
 
 <section id="suivi">
@@ -102,6 +95,3 @@ document.getElementById("plus_options").addEventListener("click", function() {
 
 </body>
 </html>
-            {% for admintcp in admintcp %}
-                <li>{{ admintcp.nom }}</li>
-            {% endfor %}

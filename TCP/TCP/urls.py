@@ -33,17 +33,22 @@ from listings import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.accueil),
-    path('accueil/', views.accueil),
-    path('expediteur/', views.expediteur),
-    path('expediteur/supprimer/<int:colis_id>/', views.supprimer_colis, name='supprimer_colis'),
-    path('destinataire/', views.destinataire),
-    path('transporteur/', views.transporteur),
+    path('', views.accueil, name = "accueil"),
+    path('accueil/', views.accueil, name = "accueil"),
+    path('expediteur/', views.expediteur, name = "expediteur"),
+    path ('delete/<int:id>/', views.delete_colis, name = "delete_colis"),
+    path('destinataire/', views.destinataire, name = "destinataire"),
+    path('transporteur/', views.transporteur, name = "transporteur"),
     path('recherche/', views.recherche_colis, name='recherche_colis'),
     path('register/', views.register),
     path('log_in/', views.log_in, name='log_in_page'),
     path('log_out/', views.log_out, name='log_out'),
     path('forgot_password/', views.forgot_password, name='forgot_password'),
-
-    
+    path('attribuer_transporteur/', views.attribuer_transporteur, name='attribuer_transporteur'),
+    path('vehicule/', views.vehicule, name='vehicule'), 
+    path('attribuer_colis/', views.attribuer_colis, name='attribuer_colis'),
+    path('colis_arrive/', views.colis_arrive, name='colis_arrive'),
+    path('colis_depart/', views.colis_depart, name='colis_depart'),
+    path('colis_livre/', views.colis_livre, name='colis_livre'),
+    path('colis_recu/', views.colis_recu, name='colis_recu'),
 ]

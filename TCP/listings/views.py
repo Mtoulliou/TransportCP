@@ -17,11 +17,9 @@ Contact : nathan.renieville@etu.umontpellier.fr
 
 
 from django.http import HttpResponse
-from django.shortcuts import render,redirect, get_object_or_404
-from listings.models import AdminTCP,Colis
-from listings.form import ColisForm
-from django.shortcuts import render, redirect
-from .models import Colis, CustomUser
+from django.shortcuts import render,redirect,HttpResponseRedirect,get_object_or_404
+from .forms import ColisForm
+from .models import colis, CustomUser, AdminTCP, Vehicle
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
@@ -152,47 +150,161 @@ def register(request):
     
 
 
-@login_required(login_url='log_in_page')
+
+
+##################################################################
+#######################   PAGES   ################################
+##################################################################
+
+
+def accueil(request):
+    return render(request, 'listings/index.html')
+
 def recherche_colis(request):
     if 'q' in request.GET:
         query = request.GET['q']
-        colis = Colis.objects.filter(numeroSuivi__exact=query)
-        return render(request, 'listings/recherche_colis.html', {'colis': colis, 'query': query})
+        coliss = colis.objects.filter(id__exact=query)
+        return render(request, 'listings/recherche_colis.html', {'colis': coliss, 'query': query})
     else:
         return render(request, 'listings/recherche_colis.html')
 
 
 
-def accueil(request):
-    admintcp=AdminTCP.objects.all()
-    return render(request, 'listings/index.html',{'admintcp':admintcp})
 
 @login_required(login_url='log_in_page')
-@user_passes_test(lambda u: u.groups.filter(name='Client').exists() or u.groups.filter(name='Admin').exists())
+#@user_passes_test(lambda u: u.groups.filter(name='Client').exists() or u.groups.filter(name='Admin').exists())
 def destinataire(request):
-    return render(request, 'listings/destinataire.html')
+    user = request.user
+    coliss = colis.objects.filter(destinataire=user)
+    return render(request, 'listings/destinataire.html',{'colis':coliss})
+
+@login_required(login_url='log_in_page')
+#@user_passes_test(lambda u: u.groups.filter(name='Client').exists() or u.groups.filter(name='Admin').exists())
+def colis_recu(request):
+    if request.method == 'POST':
+        colis_id = request.POST.get('colis_id')
+        coliss = colis.objects.get(id=colis_id)
+        # Mettre à jour l'état du colis
+        coliss.etat = colis.RECU
+        coliss.save()
+    
+        return redirect('destinataire')
+    else:
+        return redirect('destinataire')
+
+
 
 
 @login_required(login_url='log_in_page')
-@user_passes_test(lambda u: u.groups.filter(name='Expediteur').exists() or u.groups.filter(name='Admin').exists())
+#@user_passes_test(lambda u: u.groups.filter(name='Expediteur').exists() or u.groups.filter(name='Admin').exists())
 def expediteur(request):
-    colis=Colis.objects.all()
-    form = ColisForm(request.POST or None)
-    if form.is_valid() : 
-        form.save()
-    return render(request, 'listings/expediteur.html',{'colis':colis, 'form':form})
+    if request.method == 'POST':
+        form = ColisForm(request.POST)
+        if form.is_valid():
+            hauteur = form.cleaned_data['hauteur']
+            largeur = form.cleaned_data['largeur']
+            longueur = form.cleaned_data['longueur']
+            poids = form.cleaned_data['poids']
+            destination = form.cleaned_data['destination']
+            destinataire = form.cleaned_data['destinataire']
+            register = colis(hauteur=hauteur, largeur=largeur, longueur=longueur, poids=poids, destination=destination, destinataire=destinataire, expediteur=request.user.username)
+            register.save()
+            form = ColisForm()
+            utilisateur_connecte = request.user
+            coliss = colis.objects.filter(expediteur=utilisateur_connecte)
+    else:
+        form = ColisForm()
+        utilisateur_connecte = request.user
+        coliss = colis.objects.filter(expediteur=utilisateur_connecte)
+    return render(request, 'listings/expediteur.html', {'form': form,'colis': coliss})
 
 @login_required(login_url='log_in_page')
-@user_passes_test(lambda u: u.groups.filter(name='Expediteur').exists() or u.groups.filter(name='Admin').exists())
-def supprimer_colis(request, colis_id):
-    colis = get_object_or_404(Colis, pk=colis_id)
-    colis.delete()
-    return (request, 'listings/expediteur.html')     
+#@user_passes_test(lambda u: u.groups.filter(name='Expediteur').exists() or u.groups.filter(name='Admin').exists())
+def delete_colis(request, id):
+    colis.objects.filter(id=id).delete()
+    return HttpResponseRedirect('/expediteur')   
+
+
+
 
 @login_required(login_url='log_in_page')
-@user_passes_test(lambda u: u.groups.filter(name='Transporteur').exists() or u.groups.filter(name='Admin').exists())
+#@user_passes_test(lambda u: u.groups.filter(name='Transporteur').exists() or u.groups.filter(name='Admin').exists())
 def transporteur(request): 
-    return render(request, 'listings/transporteur.html')  
+    Vehicles = Vehicle.objects.all()
+    return render(request, 'listings/transporteur.html', {'Vehicle': Vehicles})  
 
+def attribuer_transporteur(request):
+    if request.method == 'POST':
+        vehicle_id = request.POST.get('vehicle_id')
+        # Récupérer l'utilisateur connecté
+        transporteur = request.user
+        # Récupérer le véhicule correspondant à l'ID
+        vehicle = Vehicle.objects.get(id=vehicle_id)
+        # Mettre à jour le champ transporteur du véhicule
+        vehicle.transporteur = transporteur
+        vehicle.save()
+        return redirect('vehicule')
+    else:
+        return redirect('transporteur')
 
+def vehicule(request):
+    utilisateur_connecte = request.user
+    rien=''
+    coliss = colis.objects.filter(transporteur='Non affecté') | colis.objects.filter(transporteur=utilisateur_connecte)
+    return render(request, 'listings/vehicule.html', {'colis': coliss})
+
+def attribuer_colis(request):
+    if request.method == 'POST':
+        colis_id = request.POST.get('colis_id')
         
+        # Récupérer l'utilisateur connecté
+        user = request.user
+        
+        # Récupérer le colis correspondant à l'ID
+        coliss = colis.objects.get(id=colis_id)
+        
+        # Mettre à jour le champ transporteur du colis avec le nom de l'utilisateur
+        coliss.transporteur = user.username
+        
+        # Enregistrer les modifications
+        coliss.save()
+        
+        return redirect('vehicule')
+    else:
+        return redirect('vehicule')
+    
+def colis_arrive(request):
+    if request.method == 'POST':
+        colis_id = request.POST.get('colis_id')
+        coliss = colis.objects.get(id=colis_id)
+        # Mettre à jour l'état du colis
+        coliss.etat = colis.ARRIVEE
+        coliss.save()
+    
+        return redirect('vehicule')
+    else:
+        return redirect('vehicule')
+    
+def colis_depart(request):
+    if request.method == 'POST':
+        colis_id = request.POST.get('colis_id')
+        coliss = colis.objects.get(id=colis_id)
+        # Mettre à jour l'état du colis
+        coliss.etat = colis.DEPART
+        coliss.save()
+    
+        return redirect('vehicule')
+    else:
+        return redirect('vehicule')
+    
+def colis_livre(request):
+    if request.method == 'POST':
+        colis_id = request.POST.get('colis_id')
+        coliss = colis.objects.get(id=colis_id)
+        # Mettre à jour l'état du colis
+        coliss.etat = colis.LIVRE
+        coliss.save()
+    
+        return redirect('vehicule')
+    else:
+        return redirect('vehicule')

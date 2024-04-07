@@ -1,21 +1,14 @@
 from django.db import models
-import random
-from django.core.validators import MaxValueValidator, MinValueValidator
-from django.db import models
 from django.contrib.auth.models import AbstractUser
 
 
 
-class Colis(models.Model):
+class colis(models.Model):
     EMBALLE = 'EMBALLE'
     ARRIVEE = 'ARRIVEE'
     DEPART = 'DEPART'
     LIVRE = 'LIVRE'
     RECU = 'RECU'
-
-    AUCUNE = 'AUCUNE'
-    MAIL = 'MAIL'
-    CODE = 'CODE'
 
     ETAT_CHOICES = [
         (EMBALLE, 'Emballé'),
@@ -25,41 +18,28 @@ class Colis(models.Model):
         (RECU, 'Reçu')
     ]
 
-    CONFIRMATION_CHOICES = [
-        (AUCUNE, 'Aucune'),
-        (MAIL, 'Mail'),
-        (CODE, 'Code')
-    ]
-
-    numeroSuivi = models.AutoField(primary_key=True)
-    poids = models.FloatField(validators=[MinValueValidator(0.01), MaxValueValidator(999999999.99)])
-    longueur = models.FloatField(validators=[MinValueValidator(0.01), MaxValueValidator(999999999.99)])
-    largeur = models.FloatField(validators=[MinValueValidator(0.01), MaxValueValidator(999999999.99)])
-    hauteur = models.FloatField(validators=[MinValueValidator(0.01), MaxValueValidator(999999999.99)])
+    id = models.AutoField(primary_key=True)
+    hauteur = models.CharField(max_length=100)
+    largeur = models.CharField(max_length=100)
+    longueur = models.CharField(max_length=100)
+    poids = models.FloatField(max_length=100)
+    destination = models.CharField(max_length=100)
     etat = models.CharField(max_length=10, choices=ETAT_CHOICES, default=EMBALLE)
-    expediteur = models.ForeignKey('Expediteur', on_delete=models.CASCADE, default=None, null=True)
-    destinataire = models.ForeignKey('Destinataire', on_delete=models.CASCADE, default=None, null=True)
-    vehicule = models.ForeignKey('Vehicle', on_delete=models.CASCADE, default=None, null=True, blank=True)
-    adresseLivraison = models.CharField(max_length=255)
-    typeDeConfirmation = models.CharField(max_length=10, choices=CONFIRMATION_CHOICES)
-    numeroConfirmation = models.CharField(max_length=6, blank=True)
-
-    def __str__(self):
-        return f"Colis {self.numeroSuivi} - Poids: {self.poids} kg - État: {self.etat}"
+    expediteur = models.CharField(max_length=100)
+    transporteur = models.CharField(max_length=100, default='Non affecté')
+    destinataire = models.CharField(max_length=100)
     
+    def __str__(self) -> str:
+        return f"Colis {self.id} - {self.etat}"
+
     @classmethod
     def recherche_par_numero(cls, numero):
-        return cls.objects.filter(numeroSuivi=numero)
-    
-    def save(self, *args, **kwargs):
-        if not self.numeroConfirmation:
-            self.numeroConfirmation = str(random.randint(100000, 999999))
-        super().save(*args, **kwargs) 
+        return cls.objects.filter(id=numero)
     
 
 class Vehicle(models.Model):
     id = models.AutoField(primary_key=True)
-    transporteur = models.ForeignKey('Transporteur', on_delete=models.CASCADE)
+    transporteur = models.ForeignKey('auth.user', on_delete=models.CASCADE, null=True, blank=True)
     localisation = models.CharField(max_length=255)
 
 
